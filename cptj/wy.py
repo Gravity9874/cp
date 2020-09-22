@@ -1,6 +1,7 @@
 from collections import Counter
 import sys
 import os
+import string
 from re import findall
 global q  # 标记，q=1时为重定向方式输入
 global w  # 标记，w=1时在功能1当中不输出words
@@ -37,7 +38,22 @@ def g3(folder):
         w = 0
         g1(folder + '/' + novel)  # 将目标文章路径传入统计函数
         print('----')
-
+def g4(novel,len1,number):        #功能5
+    a = open(novel, 'r', encoding='utf-8')
+    len2=int(len1)                #强制转换argv参数为int型
+    number2=int(number)
+    listt=findall(r'[a-z0-9^-]+', a.read().lower())  # 将文本所有英文字母转变为小写，通过正则表达式对单词进行分割匹配，返回列表
+    words2=Counter(listt)         #统计字符串里字符出现的次数，返回键值对字典
+    newwords={}
+    for key, value in words2.items():
+        sxlist={}
+        if(len(key)==len2):       #判断字母个数是否符合参数
+            sxlist[key]=value     #符合的存入sxlist
+            newwords.update(sxlist)
+    words3 = Counter(newwords)
+    frequentword = words3.most_common(number2)  #输出排名前几的单词，由参数控制输出数量
+    for i in frequentword:
+        print("{0:<9}\t{1:<9}\t".format(i[0], i[1]))
 if __name__ == '__main__':
     if sys.argv[1] == '-s':
         if (len(sys.argv) == 3):
@@ -49,8 +65,10 @@ if __name__ == '__main__':
             q = 1
             w = 0
             g1(reword)
-    elif os.path.isdir(sys.argv[1]):  # 当输入参数是目录名时执行文件夹处理函数
+    elif os.path.isdir(sys.argv[1]):
         g3(sys.argv[1])
+    elif sys.argv[1] == '-q':
+        g4(sys.argv[2],sys.argv[3],sys.argv[4])
     else:
         q = 0
         w = 0
