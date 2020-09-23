@@ -15,29 +15,24 @@ namespace foo
                 return;
             string path = args[0];
             string[] sm = File.ReadAllLines(path);
-            int[] p = new int[sm.Length];
             int[] array = new int[9000000];
             string qwe;
             for (int i = 0; ; i++)
             {
                 qwe = Console.ReadLine();
-                if (qwe.Length < 1) break;
-                p[i] = Convert.ToInt32(qwe);
+                if (qwe.Length < 1) break;   //遇空退出
+                array[i] = Convert.ToInt32(qwe);
             }
-            int[] feifa = new int[5000000];
-            string[] feifa2 = new string[5000000];
-            int k = 0;
+            string data = "";
             for (int i = 1; i < sm.Length; ++i)
             {
                 if (sm[i].Length < 1) continue;
                 int temp = Convert.ToInt32(sm[i]);
                 if (find(temp, array) == -1)
-                    feifa[k++]=temp;
+                    data = data + Convert.ToString(temp)+"\n";  //存入字符串
             }
+            Console.WriteLine(data); //输出
             DateTime afterDT = System.DateTime.Now;
-            for (int t = 0; t < feifa.Length; t++)
-                feifa2[t] = feifa[t].ToString();
-            File.WriteAllLines("output", feifa2, Encoding.UTF8); 
             TimeSpan ts = afterDT.Subtract(beforDT);
             Console.WriteLine("DateTime: {0}ms.", ts.TotalMilliseconds);
         }
